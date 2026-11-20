@@ -65,7 +65,7 @@ window.KB_PRODUTOS = [
     preco: null,
     estoque: true,
     destaque: true,
-    imagem: "assets/produtos/retro-mel.jpg",
+    imagem: "assets/produtos/oculospreto.jpg",
     tom: ["#f1d9a0", "#c8963e"],
   },
   {
@@ -76,7 +76,7 @@ window.KB_PRODUTOS = [
     preco: null,
     estoque: true,
     destaque: false,
-    imagem: "assets/produtos/retro-tartaruga.jpg",
+    imagem: "assets/produtos/oculosverde.jpg",
     tom: ["#d79a55", "#7a4a1f"],
   },
   {

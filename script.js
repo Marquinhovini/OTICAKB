@@ -49,9 +49,9 @@
     el.style.animationDelay = (i * 60) + "ms";
     var msg = "Olá! Tenho interesse no modelo *" + p.nome + "* (" + p.cor + "). Ainda está disponível?";
     el.innerHTML =
-      '<div class="thumb" style="background:linear-gradient(135deg,' + p.tom[0] + ',' + p.tom[1] + ')">' +
+      '<div class="thumb" style="background:linear-gradient(135deg,' + p.tom[0] + ',' + p.tom[1] + ');--img:url(\'' + esc(p.imagem) + '\')">' +
         glassesArt("#ffffff", "#ffffff", p.id) +
-        '<img src="' + esc(p.imagem) + '" alt="' + esc(p.nome) + '" loading="lazy" onerror="this.remove()">' +
+        '<img src="' + esc(p.imagem) + '" alt="' + esc(p.nome) + '" loading="lazy" onload="this.parentNode.classList.add(\'has-img\')" onerror="this.remove()">' +
         '<div class="badges"><span class="badge b-cat">' + (p.categoria === "sol" ? "☀️ Sol" : "👓 Grau") + '</span>' +
         (out ? '<span class="badge b-out">Indisponível</span>' : (p.destaque ? '<span class="badge b-new">Novo</span>' : "")) + '</div>' +
       '</div>' +
