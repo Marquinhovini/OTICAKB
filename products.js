@@ -59,9 +59,9 @@ window.KB_PRODUTOS = [
   /* ---- EXEMPLOS (troque pelas fotos reais em assets/produtos/) ---- */
   {
     id: 4,
-    nome: "Retrô Mel",
+    nome: "Oculos de Sol preto",
     categoria: "sol",
-    cor: "Mel degradê",
+    cor: "Preto",
     preco: null,
     estoque: true,
     destaque: true,
@@ -70,9 +70,9 @@ window.KB_PRODUTOS = [
   },
   {
     id: 5,
-    nome: "Retrô Tartaruga",
+    nome: "Oculos de Sol Verde",
     categoria: "sol",
-    cor: "Tartaruga",
+    cor: "Verde",
     preco: null,
     estoque: true,
     destaque: false,
