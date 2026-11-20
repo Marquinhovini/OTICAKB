@@ -2,13 +2,9 @@
   var CFG = window.KB_CONFIG;
   var PRODUTOS = window.KB_PRODUTOS || [];
   var root = document.documentElement;
-  var picked = new Set();
-  var state = { filter: "todos", onlyStock: true, q: "" };
-
   var $ = function (s) { return document.querySelector(s); };
-  var grid = $("#grid"), empty = $("#empty");
 
-  /* ---------- WhatsApp ---------- */
+  /* ---------- WhatsApp (todas as páginas) ---------- */
   function wppLink(msg) {
     return "https://wa.me/" + CFG.whatsapp + "?text=" + encodeURIComponent(msg);
   }
@@ -16,8 +12,9 @@
     a.href = wppLink(a.getAttribute("data-wpp"));
   });
 
-  /* ---------- Tema ---------- */
-  $("#themeBtn").addEventListener("click", function () {
+  /* ---------- Tema (todas as páginas) ---------- */
+  var themeBtn = $("#themeBtn");
+  if (themeBtn) themeBtn.addEventListener("click", function () {
     var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
     try { localStorage.setItem("kb-theme", next); } catch (e) {}
@@ -26,11 +23,29 @@
   });
 
   /* ---------- Menu mobile ---------- */
-  var links = $("#navLinks");
-  $("#menuBtn").addEventListener("click", function () { links.classList.toggle("open"); });
-  links.addEventListener("click", function (e) { if (e.target.tagName === "A") links.classList.remove("open"); });
+  var links = $("#navLinks"), menuBtn = $("#menuBtn");
+  if (links && menuBtn) {
+    menuBtn.addEventListener("click", function () { links.classList.toggle("open"); });
+    links.addEventListener("click", function (e) { if (e.target.tagName === "A") links.classList.remove("open"); });
+  }
 
-  /* ---------- Catálogo ---------- */
+  /* ---------- Reveal ao rolar ---------- */
+  var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: .12 }) : null;
+  document.querySelectorAll(".reveal").forEach(function (el) { io ? io.observe(el) : el.classList.add("in"); });
+
+  var year = $("#year");
+  if (year) year.textContent = new Date().getFullYear();
+
+  /* ---------- Catálogo (só na página principal) ---------- */
+  var grid = $("#grid");
+  if (!grid) return;
+
+  var empty = $("#empty");
+  var picked = new Set();
+  var state = { filter: "todos", onlyStock: true, q: "" };
+
   function glassesArt(c1, c2, id) {
     return '<svg class="art" viewBox="0 0 320 140" aria-hidden="true"><defs><linearGradient id="g' + id +
       '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 +
@@ -74,7 +89,7 @@
     });
     grid.innerHTML = "";
     list.forEach(function (p, i) { grid.appendChild(card(p, i)); });
-    empty.hidden = list.length > 0;
+    if (empty) empty.hidden = list.length > 0;
   }
 
   document.querySelectorAll("#filters .chip").forEach(function (b) {
@@ -83,12 +98,14 @@
       b.classList.add("active"); state.filter = b.dataset.filter; render();
     });
   });
-  $("#onlyStock").addEventListener("change", function (e) { state.onlyStock = e.target.checked; render(); });
-  $("#search").addEventListener("input", function (e) { state.q = e.target.value; render(); });
+  var onlyStock = $("#onlyStock"), search = $("#search");
+  if (onlyStock) onlyStock.addEventListener("change", function (e) { state.onlyStock = e.target.checked; render(); });
+  if (search) search.addEventListener("input", function (e) { state.q = e.target.value; render(); });
 
   /* ---------- Seleção ---------- */
   var bar = $("#pickbar");
   function updateBar() {
+    if (!bar) return;
     var n = picked.size;
     bar.hidden = n === 0;
     $("#pickCount").textContent = n;
@@ -102,20 +119,13 @@
     if (!b || b.getAttribute("aria-disabled") === "true") return;
     var id = Number(b.dataset.id);
     picked.has(id) ? picked.delete(id) : picked.add(id);
-    var c = b.closest(".card");
-    c.classList.toggle("picked", picked.has(id));
+    b.closest(".card").classList.toggle("picked", picked.has(id));
     b.classList.toggle("on", picked.has(id));
     b.textContent = picked.has(id) ? "✓ Selecionado" : "Quero este";
     updateBar();
   });
-  $("#pickClear").addEventListener("click", function () { picked.clear(); updateBar(); render(); });
+  var clear = $("#pickClear");
+  if (clear) clear.addEventListener("click", function () { picked.clear(); updateBar(); render(); });
 
-  /* ---------- Reveal ao rolar ---------- */
-  var io = "IntersectionObserver" in window ? new IntersectionObserver(function (es) {
-    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-  }, { threshold: .12 }) : null;
-  document.querySelectorAll(".reveal").forEach(function (el) { io ? io.observe(el) : el.classList.add("in"); });
-
-  $("#year").textContent = new Date().getFullYear();
   render(); updateBar();
 })();
