@@ -332,3 +332,71 @@ h1.page-title { font-size: clamp(2.2rem, 5.2vw, 3.8rem); line-height: 1.08; font
 .quick-arrow { flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--grad); position: relative; transition: transform .4s var(--ease); }
 .quick-card:hover .quick-arrow { transform: translateX(6px); }
 @media (max-width: 760px) { .quick { grid-template-columns: 1fr; } .page-top { padding-top: 120px; } }
+
+/* =====================================================
+   v2 — AJUSTES PARA CELULAR (tudo abaixo sobrescreve o que está acima)
+   ===================================================== */
+[hidden] { display: none !important; }
+
+/* cartão: foto vira botão (toque para ampliar) */
+.thumb { width: 100%; padding: 0; border: 0; cursor: zoom-in; font: inherit; color: inherit; }
+.thumb img { object-fit: cover; padding: 0; }
+.thumb.wide img { object-fit: contain; padding: 6px 0; }
+.card { animation: none; }
+.card.anim { animation: pop .5s var(--ease) both; }
+.meta .med { margin-left: auto; font-size: .8rem; opacity: .85; white-space: nowrap; }
+.actions .btn-ico { flex: 0 0 48px; padding: 0; }
+.note { margin: 0 0 20px; padding: 12px 16px; border-radius: 16px; background: var(--card); border: 1px solid var(--border); color: var(--muted); font-size: .92rem; }
+.note b { color: var(--text); }
+
+/* foto ampliada */
+.zoom { border: 0; padding: 0; background: transparent; color: #fff; max-width: min(96vw, 720px); max-height: 92vh; margin: auto; overflow: visible; }
+.zoom::backdrop { background: rgba(10, 5, 14, .86); }
+.zoom img { width: 100%; max-height: 78vh; object-fit: contain; border-radius: 18px; background: #fff; }
+.zoom p { text-align: center; margin-top: 12px; font-weight: 600; }
+.zoom-x { position: absolute; top: -48px; right: 0; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; font-size: 1.1rem; }
+
+/* barra e botão flutuante respeitam a barra do iPhone */
+.pickbar { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+.fab { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+body:has(.pickbar:not([hidden])) .fab { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); }
+.footer { padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
+
+@media (max-width: 760px) {
+  /* menos peso: sem animação infinita e blur menor */
+  .orb { animation: none; filter: blur(60px); }
+  .marquee { transform: none; margin: 10px 0 24px; padding: 12px 0; }
+  .float-chip.chip-a, .float-chip.chip-b { display: none; }
+  .hero-stats { display: none; }
+  .hero { min-height: auto; padding: 96px 0 24px; gap: 24px; }
+  .hero-cta { margin: 22px 0 0; }
+  .section { padding: 40px 0; }
+  .section-head { margin-bottom: 22px; }
+
+  /* catálogo: sempre 2 colunas, foto quadrada, um botão principal */
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .thumb { aspect-ratio: 1 / 1; }
+  .card:hover { transform: none; }
+  .info { padding: 10px 12px 12px; }
+  .info h3 { font-size: .98rem; line-height: 1.2; }
+  .meta { font-size: .8rem; flex-wrap: wrap; }
+  .meta .med { margin-left: 0; width: 100%; }
+  .actions { flex-direction: row; gap: 6px; margin-top: 10px; }
+  .actions .btn { padding: 11px 8px; font-size: .86rem; min-height: 44px; }
+  .actions .btn-ico { flex: 0 0 44px; }
+  .badge { font-size: .68rem; padding: 4px 9px; }
+
+  /* filtros em uma linha, fixos logo abaixo do topo */
+  .toolbar { position: sticky; top: 74px; z-index: 20; margin: 0 -16px 18px; padding: 8px 16px; gap: 10px;
+    background: var(--nav-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .chip { flex: none; padding: 10px 18px; min-height: 44px; }
+
+  .icon-btn { width: 44px; height: 44px; }
+  body.has-pick .fab { display: none; }
+  .pickbar { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (max-width: 480px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }   /* anula a regra antiga de 1 coluna */
+}

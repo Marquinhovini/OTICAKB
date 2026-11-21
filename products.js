@@ -13,10 +13,15 @@
    - destaque:  true = aparece com selo "Novo"
    - imagem:    caminho da foto (ex: "assets/produtos/meu-modelo.jpg")
                 Se a foto não existir, aparece um desenho no lugar.
+   - medidas:   opcional, ex: "54 □ 18 - 140" (lente, ponte, haste em mm)
    - tom:       cores do fundo do cartão [cor1, cor2]
    ===================================================== */
 
 window.KB_CONFIG = {
+  /* Planilha do Google (opcional). Arquivo > Compartilhar > Publicar na web > CSV,
+     e cole o link aqui. Colunas: nome, categoria, cor, preco, estoque, destaque, imagem, medidas.
+     Deixe "" para usar a lista abaixo. Se a planilha falhar, a lista abaixo é usada. */
+  planilha: "",
   whatsapp: "5581991370415",
   instagram: "https://www.instagram.com/otica.kb",
   telefone: "(81) 99137-0415",
@@ -32,6 +37,7 @@ window.KB_PRODUTOS = [
     estoque: true,
     destaque: true,
     imagem: "assets/produtos/gatinho-nude.jpg",
+    medidas: "54 □ 18 - 140",
     tom: ["#e9cfc9", "#b98f92"],
   },
   {
